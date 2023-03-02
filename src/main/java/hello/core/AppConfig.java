@@ -10,27 +10,34 @@ import hello.core.member.MemberServiceImpl;
 import hello.core.member.MemoryMemberRepository;
 import hello.core.order.OrderService;
 import hello.core.order.OrderServiceImpl;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class AppConfig {
 
     // 역할과 구현 나누기
     // 회원 서비스는 MemberServiceImpl을 사용.
+    @Bean
     public MemberService memberService() {
         return new MemberServiceImpl(memberRepository());
     }
 
     // 회원 저장소는 MomoryMemberRepository를 사용.
-    private static MemberRepository memberRepository() {
+    @Bean
+    public static MemberRepository memberRepository() {
         return new MemoryMemberRepository();
     }
 
     // 주문 서비스는 OrderServiceImpl을 사용.
+    @Bean
     public OrderService orderService() {
         return new OrderServiceImpl(memberRepository(), discountPolicy());
     }
 
     // 할인 정책은 RateDiscountPolicy를 사용.
-    private static DiscountPolicy discountPolicy() {
+    @Bean
+    public static DiscountPolicy discountPolicy() {
         return new RateDiscountPolicy();
     }
 }
