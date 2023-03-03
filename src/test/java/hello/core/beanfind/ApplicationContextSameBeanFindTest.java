@@ -19,11 +19,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ApplicationContextSameBeanFindTest {
 
+    // 테스트용 SameBeanConfig를 넣어준 컨테이너
     AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(SameBeanConfig.class);
 
     @Test
     @DisplayName("타입으로 조회시 같은 타입이 둘 이상 있으면 중복 오류 발생")
     void findBeanByTypeDuplicate() {
+        // NoUniqueBeanDefinitionException : 같은 타입의 Bean이 유일하지 않을 때
         assertThrows(NoUniqueBeanDefinitionException.class,
                 () -> ac.getBean(MemberRepository.class));
     }
@@ -51,7 +53,7 @@ public class ApplicationContextSameBeanFindTest {
     // 테스트용 Config
     @Configuration
     static class SameBeanConfig {
-
+        // 같은 MemberRepository 타입의 이름만 다른 Bean
         @Bean
         public MemberRepository memberRepository1() {
             return new MemoryMemberRepository();
