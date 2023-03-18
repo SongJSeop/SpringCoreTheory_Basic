@@ -5,6 +5,8 @@ import hello.core.member.MemberService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -43,5 +45,25 @@ public class SingletonTest {
         // isSameAs : 인스턴스 비교
         // isEqualTo : 자바 Equal 메소드 같은 것
         assertThat(singletonService1).isSameAs(singletonService2);
+    }
+
+    @Test
+    @DisplayName("스프링 컨테이너와 싱글톤")
+    void springContainer() {
+        // 스프링 컨테이너
+        ApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
+
+        // 스프링 컨테이너를 이용하여 memberService1, memberService2를 불러옴.
+        MemberService memberService1 = ac.getBean("memberService", MemberService.class);
+        MemberService memberService2 = ac.getBean("memberService", MemberService.class);
+
+        // 같은 참조값을 가짐.
+        System.out.println("memberService1 = " + memberService1);
+        System.out.println("memberService2 = " + memberService2);
+
+        // 테스트 통과.
+        assertThat(memberService1).isSameAs(memberService2);
+
+        // 이렇게 스프링 컨테이너를 이용하면 위의 싱글톤 패턴의 장점(객체 1개로 공유)은 이용하고 단점들(지저분한 코드 등)을 극복할 수 있다.
     }
 }
