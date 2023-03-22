@@ -18,6 +18,12 @@ public class AppConfig {
 
     // 역할과 구현 나누기
     // 회원 서비스는 MemberServiceImpl을 사용.
+
+    // @Bean memberService -> new MemoryMemberRepository()
+    // @Bean orderService -> new MemoryMemberRepository()
+    // 이렇게 각각 두 번 호출되어 싱글톤이 깨지는 것 처럼 보인다.
+    // 그러나 모두 같은 memberRepository를 호출한다.
+
     @Bean
     public MemberService memberService() {
         return new MemberServiceImpl(memberRepository());
@@ -25,7 +31,7 @@ public class AppConfig {
 
     // 회원 저장소는 MomoryMemberRepository를 사용.
     @Bean
-    public static MemberRepository memberRepository() {
+    public MemberRepository memberRepository() {
         return new MemoryMemberRepository();
     }
 
@@ -37,7 +43,7 @@ public class AppConfig {
 
     // 할인 정책은 RateDiscountPolicy를 사용.
     @Bean
-    public static DiscountPolicy discountPolicy() {
+    public DiscountPolicy discountPolicy() {
         return new RateDiscountPolicy();
     }
 }
