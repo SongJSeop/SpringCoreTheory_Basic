@@ -31,4 +31,16 @@ public class ConfigurationSingletonTest {
         Assertions.assertThat(memberService.getMemberRepository()).isSameAs(memberRepository);
         Assertions.assertThat(orderService.getMemberRepository()).isSameAs(memberRepository);
     }
+
+    @Test
+    void configurationDeep() {
+        ApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
+        AppConfig bean = ac.getBean(AppConfig.class);
+
+        System.out.println("bean = " + bean.getClass());
+        /*
+            사실은 내가 만든 AppConfig가 사용되는 것이 아닌 스프링 자체적으로 만들어주는 AppConfig@CGLIB이라는 AppConfig를 상속받은
+            클래스가 사용됨. 이 것이 싱글톤을 유지시켜줌. (이미 컨테이너에 등록된 객체는 새로 등록하지 않고 컨테이너에서 찾아서 반환하도록)
+         */
+    }
 }
