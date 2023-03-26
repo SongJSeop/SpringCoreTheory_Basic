@@ -6,6 +6,20 @@ import org.springframework.context.annotation.FilterType;
 
 @Configuration
 @ComponentScan(
+//        // 스캔을 시작할 위치를 지정. 만약 hello.core.member라고 하면 member 패키지 안의 컴포넌트들만 스캔의 대상이 됨.
+//        basePackages = "hello.core",
+//        // basePackageClasses로 지정된 것의 패키지를 시작 위치로 지정 가능. AutoAppConfig.class의 패키지는 맨 위의 hello.core이다.
+//        basePackageClasses = AutoAppConfig.class,
+        // 만약 위의 두 개를 다 지정하지 않으면 디폴트 값은 @ComponentScan이 달린(AutoAppConfig)의 패키지(hello.core)를 스캔 시작 위치로.
+        // 권장 방법은 패키지 위치 지정 없이 설정 정보(AppConfig) 클래스 위치를 프로젝트 최상단에 두는 것.
+
+        /* 컴포넌트 스캔 대상
+            @Component
+            @Controller: 스프링 MVC 컨트롤러로 인식.
+            @Service: 특별한 처리는 하지 않음. 개발자들이 핵심 비즈니스 로직이 여기 있겠구나 라고 인식시켜주는 역할.
+            @Repository: 스프링 데이터 접근 계층으로 인식하고, 데이터 계층의 예외를 스프링 예외로 변환해주는 역할.
+            @Configuration: 스프링 설정 정보로 인식하고, 스프링 빈이 싱글톤을 유지하도록 추가 처리.  */
+
         // 원래의 AppConfig를 스캔하는 것을 방지하기 위해 Configuration 클래스들은 스캔에서 제외.
         // 실무에서는 이렇게 제외하는 경우는 거의 없지만 기본 예제 코드를 유지하기 위해 제외해주는 것.
         excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Configuration.class)
