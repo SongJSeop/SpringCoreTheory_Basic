@@ -5,6 +5,8 @@ package hello.core.member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+//@Component("memberService") 이런 식으로 컴포넌트 네임을 정해줄 수 있다.
+// 다만 위와 같이 수동으로 설정한 두 개의 중복된 이름이 있다면 스캔 시 컴파일 오류가 발생한다.
 @Component
 public class MemberServiceImpl implements MemberService {
 

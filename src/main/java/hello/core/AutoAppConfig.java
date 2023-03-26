@@ -1,5 +1,9 @@
 package hello.core;
 
+import hello.core.member.MemberRepository;
+import hello.core.member.MemberServiceImpl;
+import hello.core.member.MemoryMemberRepository;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
@@ -25,5 +29,13 @@ import org.springframework.context.annotation.FilterType;
         excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Configuration.class)
 )
 public class AutoAppConfig {
+
+    // 아래처럼 수동으로 이름을 지정한 빈과 자동으로 지정된 빈(memoryMemberRepository)가 겹치면 스프링 어플리케이션 실행이 되지 않는다.
+    // 예전에는 이 경우 수동으로 이름을 지정한 빈이 우선권을 가지면서 실행이 되었었다.(수동 빈이 자동 빈을 오버라이딩 해버린다.)
+    // 예전처럼 오버라이딩 하고 싶다면 application.properties에 spring.main.allow-bean-definition-overriding=tr 옵션을 추가한다.
+//    @Bean(name = "memoryMemberRepository")
+//    MemberRepository memberRepository() {
+//        return new MemoryMemberRepository();
+//    }
 
 }
