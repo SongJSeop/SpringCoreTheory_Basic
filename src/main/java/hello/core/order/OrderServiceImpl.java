@@ -17,7 +17,8 @@ public class OrderServiceImpl implements OrderService {
        생성자 주입에 필요한 memberRepository, discountPolicy를 스프링 컨테이너에서 찾아서 주입해줌.
        생성자 주입 방법은 호출 시점에 딱 1번만 호출되는 것이 보장되어 불변, 필수인 의존관계에 사용된다.
        불변: 생성자를 통해서 주입이 된 memberRepository, discountPolicy를 더이상 수정할 방법이 없음. setter를 만들지 않는다.
-       필수: final로 지정한 memberRepository와 discountPolicy는 무조건 값이 있어야 한다.*/
+       필수: final로 지정한 memberRepository와 discountPolicy는 무조건 값이 있어야 한다.
+            final은 생성자로만 변경할 수 있음. final을 사용하는 것도 이점이 있다. 만약 final 변수의 구현체가 주입이 안되면 컴파일 오류가 나게됨.*/
     @Autowired
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
