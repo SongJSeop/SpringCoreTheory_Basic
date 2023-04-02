@@ -5,9 +5,11 @@ package hello.core.discount;
 
 import hello.core.member.Grade;
 import hello.core.member.Member;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
+@Qualifier("mainDiscountPolicy")  // 조회 대상 빈이 2개일때 해결법 2: @Qualifier
 public class RateDiscountPolicy implements DiscountPolicy {
 
     // VIP 고정 할인 10%
