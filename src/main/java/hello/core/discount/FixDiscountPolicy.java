@@ -4,7 +4,10 @@ package hello.core.discount;
 
 import hello.core.member.Grade;
 import hello.core.member.Member;
+import org.springframework.stereotype.Component;
 
+// 이렇게 FixDiscountPolicy, RateDiscountPolicy 모두 @Component를 붙이면 DiscountPolicy를 호출할 때 조회되는 빈이 2개라 에러 발생.
+@Component
 public class FixDiscountPolicy implements DiscountPolicy {
 
     // VIP 고정 할인 금액 1000원

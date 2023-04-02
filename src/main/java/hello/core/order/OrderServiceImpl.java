@@ -12,7 +12,8 @@ import org.springframework.stereotype.Component;
 public class OrderServiceImpl implements OrderService {
 
     private final MemberRepository memberRepository;
-    private final DiscountPolicy discountPolicy;
+    private final DiscountPolicy rateDiscountPolicy;
+    // 조회 대상 빈이 2개일때 대처 방법 1: 필드 명을 매칭시켜준다. 이러면 fix, rate 중 rateDiscountPolicy를 가져옴.
 
     /* 의존관계 주입 1. 생성자 주입
        @Component가 있는 OrderServiceImpl을 스캔할때 아래처럼 @Autowired가 있으면(생성자가 1개라면 @Autowired가 없어도 자동 주입 해줌)
@@ -25,7 +26,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
         Member member = memberRepository.findById(memberId);
-        int discountPrice = discountPolicy.discount(member, itemPrice);
+        int discountPrice = rateDiscountPolicy.discount(member, itemPrice);
 
         return new Order(memberId, itemName, itemPrice, discountPrice);
     }
