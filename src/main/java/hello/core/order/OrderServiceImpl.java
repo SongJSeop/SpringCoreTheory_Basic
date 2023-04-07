@@ -1,5 +1,6 @@
 package hello.core.order;
 
+import hello.core.annotation.MainDiscountPolicy;
 import hello.core.discount.DiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
@@ -9,7 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
     private final MemberRepository memberRepository;
@@ -23,10 +24,10 @@ public class OrderServiceImpl implements OrderService {
        불변: 생성자를 통해서 주입이 된 memberRepository, discountPolicy를 더이상 수정할 방법이 없음. setter를 만들지 않는다.
        필수: final로 지정한 memberRepository와 discountPolicy는 무조건 값이 있어야 한다.
             final은 생성자로만 변경할 수 있음. final을 사용하는 것도 이점이 있다. 만약 final 변수의 구현체가 주입이 안되면 컴파일 오류가 나게됨.*/
-//    public OrderServiceImpl(MemberRepository memberRepository, @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
-//        this.memberRepository = memberRepository;
-//        this.discountPolicy = discountPolicy;
-//    }
+    public OrderServiceImpl(MemberRepository memberRepository, @MainDiscountPolicy DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
     // 조회 대상 빈이 2개일때 대처 방법 2: @Qualifier("~")로 지정한 빈을 불러올 수 있다.
     // 하지만 @Qulifier는 @Qualifier를 찾는 용도로만 사용하는게 명확하고 좋다.
 
