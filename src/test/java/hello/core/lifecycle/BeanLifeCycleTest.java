@@ -46,13 +46,24 @@ public class BeanLifeCycleTest {
     - 초기화, 소멸 메서드의 이름을 변경할 수 없다.
     - 코드를 고칠 수 없는 외부 라이브러리에 적용할 수 없다.
 
-    -> 스프링 초창기의 방법으로 더 나은 방법들의 등장으로 요즘은 잘 사용하지 않음.
+    -> 스프링 초창기의 방법으로 더 나은 방법들의 등장으로 정요즘은 잘 사용하지 않음.
      */
 
     @Configuration
     static class LifeCycleConfig {
 
-        @Bean
+        /* 생명주기 콜백 지원 방법 2. 설정정보에 초기화, 종료 메서드 지정
+        아래와 같이 설정정보에 초기화 메서드를 initMethod로, 종료 메서드를 destroyMethod로 지정해줌.
+
+        특징
+        - 메서드 이름이 자유롭다.
+        - 스프링 빈이 스프링 코드에 의존하지 않는다.
+        - 코드를 고칠 수 없는 외부 라이브러리에도 초기화, 종료 메서드를 적용할 수 있다.
+
+        destroyMethod는 기본값이 (inferred)인데, 이 것은 'close', 'shutdown'라는 이름의 메서드를 찾아 자동으로 호출해준다.
+        직접 스프링 빈으로 등록하면 destroyMethod에 종료 메서드를 따로 적어주지 않아도 대부분 잘 동작한다.
+         */
+        @Bean(initMethod = "init", destroyMethod = "close")
         public NetworkClient networkClient() {
             NetworkClient networkClient = new NetworkClient();
             networkClient.setUrl("http://hello-spring.dev");

@@ -1,10 +1,10 @@
 package hello.core.lifecycle;
 
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
+//import org.springframework.beans.factory.DisposableBean;
+//import org.springframework.beans.factory.InitializingBean;
 
-// 스프링 빈 생명주기 콜백 지원 방법 1. 인터페이스(InitializingBean, DisposableBean)후
-public class NetworkClient implements InitializingBean, DisposableBean {
+// 스프링 빈 생명주기 콜백 지원 방법 2. 설정 정보에 초기화, 종료 메서드 지정
+public class NetworkClient {
 
     private String url;
 
@@ -30,17 +30,15 @@ public class NetworkClient implements InitializingBean, DisposableBean {
         System.out.println("close " + url);
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        System.out.println("NetworkClient.afterPropertiesSet");
+    public void init() {
+        System.out.println("NetworkClient.init");
         connect();
         call("초기화 연결 메세지");
 
     }
 
-    @Override
-    public void destroy() throws Exception {
-        System.out.println("NetworkClient.destroy");
+    public void close() {
+        System.out.println("NetworkClient.close");
         disconnect();
     }
 }
