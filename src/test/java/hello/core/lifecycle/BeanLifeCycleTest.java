@@ -63,7 +63,8 @@ public class BeanLifeCycleTest {
         destroyMethod는 기본값이 (inferred)인데, 이 것은 'close', 'shutdown'라는 이름의 메서드를 찾아 자동으로 호출해준다.
         직접 스프링 빈으로 등록하면 destroyMethod에 종료 메서드를 따로 적어주지 않아도 대부분 잘 동작한다.
          */
-        @Bean(initMethod = "init", destroyMethod = "close")
+//        @Bean(initMethod = "init", destroyMethod = "close")
+        @Bean
         public NetworkClient networkClient() {
             NetworkClient networkClient = new NetworkClient();
             networkClient.setUrl("http://hello-spring.dev");
