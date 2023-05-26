@@ -1,7 +1,7 @@
 package hello.core.scope;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -42,7 +42,21 @@ public class SingletonWithPrototypeTest1 {
         이 점이 싱글톤빈과 프로토타입빈을 같이 사용할 때의 문제점임.
         우리가 원하는 점은 항상 count 인자가 새로 생성되어 사용될 것을 원한다.(프로토타입빈은 사용시마다 새로 생성할 것을 원하고 지정하므로)
          */
+    }
 
+    @Test
+    void SingletonClientUsePrototypeProvider() {
+        AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(ClientBean2.class, PrototypeBean.class);
+        ClientBean2 clientBean1 = ac.getBean(ClientBean2.class);
+        int count1 = clientBean1.logic();
+        assertThat(count1).isEqualTo(1);
+
+        ClientBean2 clientBean2 = ac.getBean(ClientBean2.class);
+        int count2 = clientBean2.logic();
+        assertThat(count2).isEqualTo(1);
+        /*
+        프로바이더를 사용하여 문제 해결. 각각 다른 PrototypeBean이 생성되는 모습.(시스템로그에 init메서드가 따로 실행됨)
+         */
     }
 
     @Scope("singleton")
@@ -55,6 +69,28 @@ public class SingletonWithPrototypeTest1 {
         }
 
         public int logic() {
+            prototypeBean.addCount();
+            int count = prototypeBean.count;
+            return count;
+        }
+    }
+
+    @Scope("singleton")
+    static class ClientBean2 {
+        private final ObjectProvider<PrototypeBean> prototypeBeanProvider;
+        /*
+        Provider를 사용하여 주입. DL(Dependency Lookup). 의존관계 주입(DI)이 아닌 의존관계 탐색.
+        ObjectProvider 대신 ObjectFactory를 사용해도 작동됨. Provider가 더 많은 편의기능 제공.
+        하지만 스프링에 의존한다는 단점이 있음.
+        */
+
+        @Autowired
+        ClientBean2(ObjectProvider<PrototypeBean> prototypeBeanProvider) {
+            this.prototypeBeanProvider = prototypeBeanProvider;
+        }
+
+        public int logic() {
+            PrototypeBean prototypeBean = prototypeBeanProvider.getObject();
             prototypeBean.addCount();
             int count = prototypeBean.count;
             return count;
