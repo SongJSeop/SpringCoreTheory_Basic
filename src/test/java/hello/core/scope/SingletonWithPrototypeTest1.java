@@ -8,7 +8,9 @@ import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.inject.Provider;
 
+import static hello.core.scope.PrototypeTest.*;
 import static org.assertj.core.api.Assertions.*;
 
 public class SingletonWithPrototypeTest1 {
@@ -77,20 +79,27 @@ public class SingletonWithPrototypeTest1 {
 
     @Scope("singleton")
     static class ClientBean2 {
-        private final ObjectProvider<PrototypeBean> prototypeBeanProvider;
-        /*
-        Provider를 사용하여 주입. DL(Dependency Lookup). 의존관계 주입(DI)이 아닌 의존관계 탐색.
-        ObjectProvider 대신 ObjectFactory를 사용해도 작동됨. Provider가 더 많은 편의기능 제공.
-        하지만 스프링에 의존한다는 단점이 있음.
-        */
+//        private final ObjectProvider<PrototypeBean> prototypeBeanProvider;
+//        /*
+//        Provider를 사용하여 주입. DL(Dependency Lookup). 의존관계 주입(DI)이 아닌 의존관계 탐색.
+//        ObjectProvider 대신 ObjectFactory를 사용해도 작동됨. Provider가 더 많은 편의기능 제공.
+//        하지만 스프링에 의존한다는 단점이 있음.
+//        */
+//
+//        @Autowired
+//        ClientBean2(ObjectProvider<PrototypeBean> prototypeBeanProvider) {
+//            this.prototypeBeanProvider = prototypeBeanProvider;
+//        }
 
         @Autowired
-        ClientBean2(ObjectProvider<PrototypeBean> prototypeBeanProvider) {
-            this.prototypeBeanProvider = prototypeBeanProvider;
-        }
+        private Provider<PrototypeBean> prototypeBeanProvider;
+        /*
+        javax의 Provider사용. 자바 표준. 지금 딱 필요한 DL정도의 기능만 제공.
+        스프링이 아닌 다른 컨테이너에서도 사용 가능.
+         */
 
         public int logic() {
-            PrototypeBean prototypeBean = prototypeBeanProvider.getObject();
+            PrototypeBean prototypeBean = prototypeBeanProvider.get();
             prototypeBean.addCount();
             int count = prototypeBean.count;
             return count;
